@@ -1,0 +1,51 @@
+@font-face {
+    src: url('./fonts/Roboto-Regular.ttf');
+    font-family: 'Regular';
+  }
+
+:root {
+    --light: #F9F7F2;
+    --accent: #FCCA6F;
+    --basic: brown;
+    --dark: #333;;
+}
+
+.btn-green  {
+    background-color: olivedrab;
+    border: none;
+    padding: .5rem;
+    border-radius: 3px;
+    color: white;
+    box-shadow: 2px 2px 2px #222;
+}
+
+.btn-green:hover {
+    background-color: #222;
+    cursor: pointer;
+}
+
+.btn-warning  {
+    background-color: brown;
+    border: none;
+    padding: .5rem;
+    border-radius: 3px;
+    color: white;
+    box-shadow: 2px 2px 2px #222;
+}
+
+.btn-warning:hover {
+    background-color: #222;
+    cursor: pointer;
+}
+
+input {
+    padding: .5rem;
+    border-radius: .5rem;
+    border: none;
+}
+
+select {
+    padding: .5rem;
+    width: 180px;
+    border-radius: .5rem;
+}
