@@ -16,7 +16,7 @@
     </div>
 </template>
 <script>
-    import axios from 'axios';
+    import axios from '@/lib/axios';
     export default {
         name: 'LoginComponent',
         data(){
@@ -34,7 +34,7 @@
                 formData.append('email', email);
                 formData.append('password', password);
 
-                axios.post('http://localhost/api-equipo-dos/user/login', formData, {withCredentials: true })
+                axios.post('/user/login', formData, { withCredentials: true })
                     .then(res => {
                         if (res.data.status === 'success') {
                             this.$emit('isLogged');

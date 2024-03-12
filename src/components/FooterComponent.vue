@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <h3>Equipo dos, 2023</h3>
+        <h3>Pluralis, 20203</h3>
     </footer>
 </template>
 <script>

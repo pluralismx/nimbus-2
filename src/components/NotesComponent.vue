@@ -10,7 +10,7 @@
     </aside>
 </template>
 <script>
-    // import axios from 'axios';
+
     import NewNoteComponent from './NewNoteComponent.vue';
     import NoteComponent from './NoteComponent.vue';
     

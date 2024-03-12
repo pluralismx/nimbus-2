@@ -10,15 +10,15 @@
         <td v-if="edit"><input v-model="email" type="text" :placeholder="leadData.email"></td>
 
         <td>
-            <select class="select-status" v-model="status" :style="{ backgroundColor: statusColor }" @change="updateLead()">
+            <select class="select-status" v-model="status" :style="{ color: statusColor }" @change="updateLead()">
                 <option v-for="statusOption in this.select_values" :key="statusOption" :value="statusOption">{{ statusOption }}</option>
             </select>
         </td>
 
         <td>{{ this.date }}</td>
 
-        <td v-if="!edit"><button @click="editForm()">editar</button><button @click="deleteLead()">borrar</button></td>
-        <td v-if="edit"><button @click="updateLead()">actualizar</button><button @click="editForm()">cancelar</button></td>
+        <td v-if="!edit"><button class="btn-green" @click="editForm()">editar</button>&nbsp;&nbsp;<button class="btn-warning" @click="deleteLead()">borrar</button></td>
+        <td v-if="edit"><button class="btn-green" @click="updateLead()">actualizar</button>&nbsp;&nbsp;<button class="btn-green" @click="editForm()">cancelar</button></td>
     </tr>
 </template>
 <script>
@@ -101,7 +101,7 @@
                 formData.append('email', email);
                 formData.append('status', status);
 
-                axios.post('http://localhost/api-equipo-dos/lead/updateLead', formData)
+                axios.post('/lead/updateLead', formData)
                      .then(res => {
                         if(res.data == 'succes'){
                             this.$emit('lead-updated');
@@ -117,14 +117,12 @@
             },
             deleteLead(){
 
-                console.log('hola');
                 let id = this.id;
-                console.log(id);
                 
                 let formData = new FormData();
                 formData.append('id_lead', id);
 
-                axios.post('http://localhost/api-equipo-dos/lead/deleteLead', formData)
+                axios.post('/lead/deleteLead', formData)
                      .then(res => {
                         if(res.data == 'succes'){
                             this.$emit('lead-updated');
@@ -142,7 +140,7 @@
         }
     }
 </script>
-<style>
+<style scoped>
     td {
         padding: 6px;
         text-align: center;
@@ -151,5 +149,10 @@
 
     .select-status {
         color: white;
+    }
+
+    button {
+        width: 40%;
+
     }
 </style>

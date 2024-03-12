@@ -48,4 +48,9 @@ select {
     padding: .5rem;
     width: 180px;
     border-radius: .5rem;
+    box-shadow: 2px 2px 4px #333;
+}
+
+select:focus {
+    outline: none;
 }

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/lib/axios';
 export default {
   name: 'NavigationBarComponent',
   props: {
@@ -43,7 +43,7 @@ export default {
       let formData = new FormData();
       let id = this.selectedWebsiteId;
       formData.append('id_website', id);
-      axios.post('http://localhost/api-equipo-dos/dashboard/dashboardData', formData, { withCredentials: true })
+      axios.post('/dashboard/dashboardData', formData, { withCredentials: true })
            .then(res=>{
               const dashboard = {
                 website: id,

@@ -1,14 +1,18 @@
 <template>
     <section>
-        <h1>Prospectos</h1>
+        <div class="title-bar">
+            <h1>Prospectos</h1>
+            <span @click="add_lead_modal = true">nuevo</span>
+        </div>
         <hr>
         <br>
         <table>
             <thead>
                 <tr class="table-tools">
-                    <td class="table-search" colspan="3">
-                        <label for="">Buscar: </label>
-                        <input type="text">
+                    <td class="table-search" colspan="2">
+                        <label for="">Buscar:&nbsp;</label>
+                        <input type="text">&nbsp;
+                        <button class="btn-green">buscar</button>
                     </td>
                     <td class="table-pagination" colspan="4">
                         <label for="rows_per_page">filas por página: </label>
@@ -36,15 +40,19 @@
                 <TableRowComponent v-for="lead in displayedTableData" :leadData="lead" :key="lead.id_lead" @lead-updated="handleLeadUpdated"/>
             </tbody>
         </table>
+        <LeadAddModalComponent v-show="add_lead_modal"/>
     </section>
 </template>
 <script>
     import axios from 'axios';
     import TableRowComponent from './TableRowComponent.vue';
+    import LeadAddModalComponent from './LeadAddModalComponent.vue';
+
     export default {
         name: 'LeadTableComponent',
         components: {
-            TableRowComponent
+            TableRowComponent,
+            LeadAddModalComponent
         },
         props: {
             leads : {
@@ -60,7 +68,8 @@
                 order_by_phone: false,
                 order_by_email: false,
                 order_by_status: false,
-                order_by_date: false
+                order_by_date: false,
+                add_lead_modal: false
             }
         },
         computed: {
@@ -212,11 +221,24 @@
         padding: 2rem;
         box-sizing: border-box;
         height: 100%;
+        overflow-y: scroll;
     }
 
-    h1 {
+    .title-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .title-bar h1 {
         margin: 0px;
     }
+
+    .title-bar span:hover {
+        cursor: pointer;
+        font-weight: bold;
+    }
+
 
     table{
         width: 100%;

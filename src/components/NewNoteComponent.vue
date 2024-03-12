@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 
+    import axios from '@/lib/axios';
     export default{
         name: 'NewNoteComponent',
         props: {
@@ -40,7 +40,7 @@ import axios from 'axios';
                 formData.append('id_website', website);
                 formData.append('note_title', title);
                 formData.append('note_content', content);
-                axios.post('http://localhost/api-equipo-dos/note/save', formData, { withCredentials: true })
+                axios.post('/note/save', formData, { withCredentials: true })
                      .then(() => {
                         this.$emit('notes-updated');
                         this.title = null;

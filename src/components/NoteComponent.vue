@@ -14,7 +14,7 @@
     </div>
 </template>
 <script>
-    import axios from 'axios';
+    import axios from '@/lib/axios';
     export default {
         name: 'NoteComponent',
         props: {
@@ -24,16 +24,13 @@
             }
         },
         created() {
-            // console.log('Contenido de noteData:', this.noteData);
             this.title = this.noteData.title;
-            // console.log('Contenido de this.title', this.title);
             this.content = this.noteData.content;
-            // console.log('Contenido de this.content', this.content);
         },
         data() {
             return {
-                title: 'sss',
-                content: 'sss'
+                title: null,
+                content: null
             }
         },
         methods: {
@@ -44,7 +41,7 @@
                 formData.append('title', this.title);
                 formData.append('content', this.content);
 
-                axios.post('http://localhost/api-equipo-dos/note/update', formData, {withCredentials: true})
+                axios.post('/note/update', formData, {withCredentials: true})
                     .then(res => {
                         if(res.data == 'success'){
                             alert('Se actualizo la nota');
@@ -59,7 +56,7 @@
                 let formData = new FormData();
                 let id = this.noteData.id_note;
                 formData.append('id_note', id);
-                axios.post('http://localhost/api-equipo-dos/note/delete', formData, { withCredentials: true})
+                axios.post('/note/delete', formData, { withCredentials: true})
                      .then(()=>{
                         this.$emit('handle-update');
                      }).catch(error=>{

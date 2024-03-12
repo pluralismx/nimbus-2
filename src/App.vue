@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/lib/axios';
 import LoginComponent from './components/LoginComponent.vue';
 import NavigationBarComponent from './components/NavigationBarComponent.vue';
 import NotesComponent from './components/NotesComponent.vue';
@@ -67,7 +67,7 @@ export default {
     },
     navBarData() {
 
-      axios.get('http://localhost/api-equipo-dos/website/getSites', { withCredentials: true })
+      axios.get('/website/getSites', { withCredentials: true })
         .then(res => {
           if (res.data.status === 'success') {
             this.websites = res.data.websites;
@@ -101,7 +101,7 @@ export default {
 
       formData.append('id_website', website);
 
-      axios.post('http://localhost/api-equipo-dos/note/getNotes', formData, { withCredentials: true })
+      axios.post('/note/getNotes', formData, { withCredentials: true })
         .then(res => {
           this.notes = res.data;
           this.modal = true;
@@ -118,7 +118,7 @@ export default {
 
       formData.append('id_website', website);
 
-      axios.post('http://localhost/api-equipo-dos/lead/getLeads', formData, { withCredentials: true })
+      axios.post('/lead/getLeads', formData, { withCredentials: true })
         .then(res => {
           this.leads = res.data;
           this.modal = true;
