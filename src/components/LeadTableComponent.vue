@@ -23,28 +23,38 @@
                             <option value="50">50</option>
                         </select>
                         <button @click="previousPage">&lt;</button>
-                        <span>&nbsp;{{ this.cp }}</span><span>&nbsp;/&nbsp;</span><span>{{ this.tablePagination }}&nbsp;</span>
+                        <span>&nbsp;{{ this.cp }}</span><span>&nbsp;/&nbsp;</span><span>{{ this.pages }}&nbsp;</span>
                         <button @click="nextPage">&gt;</button>
                     </td>
                 </tr>
                 <tr>
-                    <th width="18%"><span @click="sortTable('name')">Nombre</span></th>
-                    <th width="18%"><span @click="sortTable('phone')">Telefono</span></th>
-                    <th width="18%"><span @click="sortTable('email')">Correo</span></th>
-                    <th width="18%"><span @click="sortTable('status')">Status</span></th>
-                    <th width="18%"><span @click="sortTable('date')">Fecha</span></th>
+                    <th width="18%" @click="sortTable('name')"><span>Nombre</span></th>
+                    <th width="18%" @click="sortTable('phone')"><span>Telefono</span></th>
+                    <th width="18%" @click="sortTable('email')"><span>Correo</span></th>
+                    <th width="18%" @click="sortTable('status')"><span>Status</span></th>
+                    <th width="18%"><span>Fecha</span></th>
                     <th width="18%">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <TableRowComponent v-for="lead in displayedTableData" :leadData="lead" :key="lead.id_lead" @lead-updated="handleLeadUpdated"/>
+                <TableRowComponent 
+                    v-for="lead in displayedData" 
+                    :leadData="lead" 
+                    :key="lead.id_lead" 
+                    @lead-updated="handleLeadUpdated"
+                />
             </tbody>
         </table>
-        <LeadAddModalComponent v-show="add_lead_modal"/>
     </section>
+    <LeadAddModalComponent 
+        :website="website_id" 
+        v-show="add_lead_modal" 
+        @close-modal="add_lead_modal = false"
+        @lead-added="handleLeadUpdated"
+    />
 </template>
 <script>
-    import axios from 'axios';
+
     import TableRowComponent from './TableRowComponent.vue';
     import LeadAddModalComponent from './LeadAddModalComponent.vue';
 
@@ -58,159 +68,108 @@
             leads : {
                 type: Array,
                 required: true
+            },
+            website : {
+                type: Number,
+                required: true
             }
         },
         data(){
             return {
-                rp: 10, // Rows per page
-                cp: 1, // Current page
-                order_by_name: false,
-                order_by_phone: false,
-                order_by_email: false,
-                order_by_status: false,
-                order_by_date: false,
-                add_lead_modal: false
+                website_id: null,
+                add_lead_modal: false,
+                leads_local: null,
+                leads_per_page: null,
+                rp: 10,
+                cp: 1         
             }
         },
         computed: {
-            leads_local() {
-                return [...this.leads];
+
+            website_updated(){
+                return this.website;
             },
-            tablePagination(){
-                return Math.ceil((this.leads.length) / this.rp);
+            leads_updated() {
+                return this.leads;
             },
-            limitStart(){
+            pages() {
+                return Math.ceil((this.leads_local.length / this.rp));
+            },
+            limitStart() {
                 return (this.cp - 1) * this.rp;
             },
             limitEnd(){
-                return (this.cp * this.rp);
+                return (this.rp * this.cp);
             },
-            displayedTableData(){
+            displayedData(){
                 return this.leads_local.slice(this.limitStart, this.limitEnd);
             }
+
+        },
+        watch: {
+            leads_updated: {
+                handler(newVal){
+                    this.leads_local = newVal;
+                },
+                immediate: true,
+                deep: true
+            },
+            website_updated: {
+                handler(newVal){
+                    this.website_id = newVal;
+                },
+                immediate: true
+            },
         },
         methods: {
             nextPage(){
-                if(this.cp < this.tablePagination){
+                if(this.cp < this.pages){
                     this.cp++;
-                    console.log(this.cp);
                 }
             },
             previousPage(){
                 if(this.cp > 1){
                     this.cp--;
-                    console.log(this.cp);
                 }
-            },
-            sortTable(column) {
-
-                switch(column){
-                    case 'name':
-                        if(!this.order_by_name){
-                            this.leads_local.sort((a, b) => a.name.localeCompare(b.name));
-                            this.order_by_name = true;
-                        }else{
-                            this.leads_local.sort((a, b) => b.name.localeCompare(a.name));
-                            this.order_by_name = false;
-                        }
-                    break;
-
-                    case 'phone':
-                        if(!this.order_by_phone){
-                            this.leads_local.sort((a, b) => a.phone.localeCompare(b.phone));
-                            this.order_by_phone = true;
-                        }else{
-                            this.leads_local.sort((a, b) => b.phone.localeCompare(a.phone));
-                            this.order_by_phone = false;
-                        }
-                    break;
-                    
-                    case 'email':
-                        if(!this.order_by_email){
-                            this.leads_local.sort((a, b) => a.email.localeCompare(b.email));
-                            this.order_by_email = true;
-                        }else{
-                            this.leads_local.sort((a, b) => b.email.localeCompare(a.email));
-                            this.order_by_email = false;
-                        }
-                    break;
-
-                    case 'status':
-                        if(!this.order_by_status){
-                            this.leads_local.sort((a, b) => a.status.localeCompare(b.status));
-                            this.order_by_status = true;
-                        }else{
-                            this.leads_local.sort((a, b) => b.status.localeCompare(a.status));
-                            this.order_by_status = false;
-                        }
-                    break;
-
-                    case 'date':
-                        if(!this.order_by_date){
-                            this.leads_local.sort((a, b) => a.created_at.localeCompare(b.created_at));
-                            this.order_by_date = true;
-                        }else{
-                            this.leads_local.sort((a, b) => b.created_at.localeCompare(a.created_at));
-                            this.order_by_date = false;
-                        }
-                    break;  
-                }
-            },
-            deleteUser(id){
-                let formData = new FormData();
-                formData.append('id_user', id)
-                axios.post('http://localhost/api-equipo-dos/user/deleteUser', formData)
-                     .then(res => {
-                        if(res.data == 'success'){
-                            this.recordsUser();
-                        }
-                     })
-                     .catch(error => {
-                        console.error(error);
-                    });
-            },
-            editUser(id){
-
-                let nombre = document.querySelector('#cell-nombre'+id);
-                let apellidos = document.querySelector('#cell-apellidos'+id);
-                let telefono = document.querySelector('#cell-telefono'+id);
-                let correo = document.querySelector('#cell-correo'+id);
-                let button_edit = document.querySelector('#cell-button-edit'+id);
-
-                let nombre_edit = document.querySelector('#edit-nombre'+id);
-                let apellidos_edit = document.querySelector('#edit-apellidos'+id);
-                let telefono_edit = document.querySelector('#edit-telefono'+id);
-                let correo_edit = document.querySelector('#edit-correo'+id);
-                let button_save = document.querySelector('#cell-button-save'+id);
-
-                nombre.style.display = 'none';
-                apellidos.style.display = 'none';
-                telefono.style.display = 'none';
-                correo.style.display = 'none';
-                button_edit.style.display = 'none';
-
-                nombre_edit.style.display = 'table-cell';
-                apellidos_edit.style.display = 'table-cell';
-                telefono_edit.style.display = 'table-cell';
-                correo_edit.style.display = 'table-cell';
-                button_save.style.display = 'table-cell';
-                
             },
             handleLeadUpdated(){
-                this.$emit('handleLeadUpdated');
-            },  
-            cancelUpdate(id){
-                document.querySelector('#cell-nombre'+id).style.display = 'table-cell';
-                document.querySelector('#cell-apellidos'+id).style.display = 'table-cell';
-                document.querySelector('#cell-telefono'+id).style.display = 'table-cell';
-                document.querySelector('#cell-correo'+id).style.display = 'table-cell';
-                document.querySelector('#cell-button-edit'+id).style.display = 'table-cell';
+                this.add_lead_modal = false;
+                this.$emit('lead-updated');
+            },
+            sortTable(index) {
 
-                document.querySelector('#edit-nombre'+id).style.display = 'none';
-                document.querySelector('#edit-apellidos'+id).style.display = 'none';
-                document.querySelector('#edit-telefono'+id).style.display = 'none';
-                document.querySelector('#edit-correo'+id).style.display = 'none';
-                document.querySelector('#cell-button-save'+id).style.display = 'none';
+                let asc = true;
+                let desc = true;
+
+                for (let i = 1; i < this.leads_local.length; i++) {
+                    if (this.leads_local[i][index] < this.leads_local[i - 1][index]) {
+                        asc = false;
+                    }
+                    if (this.leads_local[i][index] > this.leads_local[i - 1][index]) {
+                        desc = false;
+                    }
+                }
+
+                if (desc) {
+                    this.leads_local.sort((a, b) => {
+                        let columnA = a[index];
+                        let columnB = b[index];
+                        return columnA.localeCompare(columnB, 'es', { sensitivity: 'base' });
+                    });
+                } else if (asc) {
+                    this.leads_local.sort((a, b) => {
+                        let columnA = a[index];
+                        let columnB = b[index];
+                        return -columnA.localeCompare(columnB, 'es', { sensitivity: 'base' });
+                    });
+                } else {
+                    this.leads_local.sort((a, b) => {
+                        let columnA = a[index];
+                        let columnB = b[index];
+                        return columnA.localeCompare(columnB, 'es', { sensitivity: 'base' });
+                    });
+                }
+                
             }
         }
     }

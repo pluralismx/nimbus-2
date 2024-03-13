@@ -3,48 +3,168 @@
         <div class="modal-container">
             <div class="modal-header">
                 <span>Agregar lead manualmente</span>
-                <button class="btn-warning">&times;</button>
+                <button @click="close()" class="btn-green">&times;</button>
             </div>
             <div class="modal-body">
-                <div.add-lead-form>
-                    <label for="">Nombre</label>
-                    <input type="text">
-                    <label for="">Phone</label>
-                    <input type="text">
-                    <label for="">Email</label>
-                    <input type="text">
-                    <label for="">Status</label>
-                    <select name="" id=""></select>
-                </div.add-lead-form>
+                <div class="add-lead-form">
+
+                    <div>
+                        <label>Nombre</label>
+                        <input v-model="name" type="text">
+                    </div>
+                    <div>
+                        <label>Phone</label>
+                        <input v-model="phone" type="text">
+                    </div>
+                    <div>
+                        <label>Email</label>
+                        <input v-model="email" type="text">
+                    </div>
+
+                    <div>
+                        <label>Status</label>
+                        <select v-model="status">
+                            <option v-for="option in status_list" :key="option">{{ option }}</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button @click="addLead()" class="btn-warning">guardar</button>&nbsp;&nbsp;
+                <button @click="close()" class="btn-green">cancelar</button>
             </div>
         </div>
     </div>
 </template>
 <script>
-
+import axios from '@/lib/axios'
 export default {
     name: 'LeadAddModalComponent',
+    props:{
+        website : {
+            type: Number,
+            required: true
+        }
+    },
     data() {
         return {
+            website_id: null,
             name: null,
             phone: null,
             email: null,
-            status: null
+            status: null,
+            status_list: [
+                "nuevo",
+                "identificacion",
+                "presentacion",
+                "cotiziacion",
+                "negociacion",
+                "cierre"
+            ]
         }
+    },
+    computed: {
+        updated_website(){
+            return this.website;
+        }
+    },
+    watch: {
+        updated_website: {
+            handler(newVal){
+                this.website_id = newVal;
+            },
+            immediate: true
+        }
+    },
+    methods: {
+        addLead(){
+
+            let formData = new FormData();
+            let content = "this is a test";
+
+            formData.append('id_website', this.website_id);
+            formData.append('name', this.name);
+            formData.append('phone', this.phone);
+            formData.append('email', this.email);
+            formData.append('status', this.status);
+            formData.append('content', content);
+
+            axios.post('/lead/addLeadManually', formData)
+                .then(res=>{
+                    if(res.data.status == 'success'){
+                        this.$emit('lead-added');
+                    }
+                })
+                .catch(error=>{
+                    console.log(error);
+                });
+        },
+        close(){
+            this.$emit("close-modal");
+        }
+
     }
 }
 
 </script>
 
-<style>
+<style scoped>
     .modal-screen {
-        left: 0;
         top: 0;
-        position: fixed;
+        left: 0;
+        position: absolute;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         height: 100%;
         width: 100%;
+        background-color: rgba(8, 8, 8, .7);
+        z-index: 100;
+    }
+
+    .modal-container {
+        width: 20%;
+        background-color: #888;
+    }
+
+    .modal-header {
+        background-color: brown;
+        padding: .5rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--light);
+    }
+
+    .modal-body{
+        background-color: #888;
+        padding: .5rem;
+    }
+
+    .add-lead-form {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .add-lead-form div {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 1rem;
+        align-items: center;
+    }
+
+    .add-lead-form div input, select {
+        width: 70%;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 1rem;
     }
 </style>

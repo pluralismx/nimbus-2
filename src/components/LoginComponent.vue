@@ -37,7 +37,7 @@
                 axios.post('/user/login', formData, { withCredentials: true })
                     .then(res => {
                         if (res.data.status === 'success') {
-                            this.$emit('isLogged');
+                            this.$emit('user-logged-in');
                         } else if (res.data.status === 'error') {
                             this.failed = true;
                         }

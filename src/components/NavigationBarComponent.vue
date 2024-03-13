@@ -14,7 +14,7 @@
         prospectos
       </li>
       <li>
-        <router-link to="/home">email</router-link>
+        email
       </li>
     </ul>
     <ul>
@@ -66,7 +66,7 @@ export default {
       let formData = new FormData();
       formData.append('log_out', 1);
 
-      axios.post('http://localhost/api-equipo-dos/user/logout', formData)
+      axios.post('/user/logout', formData)
            .then(() => {
               this.$emit('logged-out');
            })

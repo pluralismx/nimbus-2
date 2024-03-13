@@ -6,7 +6,6 @@ import './assets/global.css';
 import LeadTableComponent from './components/LeadTableComponent.vue';
 
 const routes = [
-
     { path: '/prospectos', component: LeadTableComponent }
 ];
 

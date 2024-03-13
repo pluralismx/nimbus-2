@@ -1,28 +1,38 @@
 <template>
     <tr>
-        <td v-if="!edit">{{ this.name }}</td>
-        <td v-if="edit"><input v-model="name" type="text" :placeholder="leadData.name"></td>
+        <!-- Name -->
+        <td v-if="!edit" width="18%">{{ this.name }}</td>
+        <td v-if="edit" width="18%"><input v-model="name" type="text" :placeholder="leadData.name"></td>
 
-        <td v-if="!edit">{{ this.phone }}</td>
-        <td v-if="edit"><input v-model="phone" type="text" :placeholder="leadData.phone"></td>
+        <!-- Phone -->
+        <td v-if="!edit" width="18%">{{ this.phone }}</td>
+        <td v-if="edit" width="18%"><input v-model="phone" type="text" :placeholder="leadData.phone"></td>
 
-        <td v-if="!edit">{{ this.email }}</td>
-        <td v-if="edit"><input v-model="email" type="text" :placeholder="leadData.email"></td>
+        <!-- Email -->
+        <td v-if="!edit" width="18%">{{ this.email }}</td>
+        <td v-if="edit" width="18%"><input v-model="email" type="text" :placeholder="leadData.email"></td>
 
-        <td>
+        <!-- Status -->
+        <td width="18%">
             <select class="select-status" v-model="status" :style="{ color: statusColor }" @change="updateLead()">
                 <option v-for="statusOption in this.select_values" :key="statusOption" :value="statusOption">{{ statusOption }}</option>
             </select>
         </td>
 
+        <!-- Date -->
         <td>{{ this.date }}</td>
 
-        <td v-if="!edit"><button class="btn-green" @click="editForm()">editar</button>&nbsp;&nbsp;<button class="btn-warning" @click="deleteLead()">borrar</button></td>
-        <td v-if="edit"><button class="btn-green" @click="updateLead()">actualizar</button>&nbsp;&nbsp;<button class="btn-green" @click="editForm()">cancelar</button></td>
+        <!-- Actions -->
+        <td v-if="!edit" width="18%">
+            <button class="btn-green" @click="editForm()">editar</button>&nbsp;&nbsp;<button class="btn-warning" @click="deleteLead()">borrar</button>
+        </td>
+        <td v-if="edit" width="18%">
+            <button class="btn-warning" @click="updateLead()">actualizar</button>&nbsp;&nbsp;<button class="btn-green" @click="editForm()">cancelar</button>
+        </td>
     </tr>
 </template>
 <script>
-    import axios from 'axios';
+    import axios from '@/lib/axios';
     export default {
         name: 'TableRowComponent',
         props: {
@@ -88,27 +98,18 @@
             },
             updateLead() {
 
-                let id = this.id;
-                let name = this.name;
-                let phone = this.phone;
-                let email = this.email;
-                let status = this.status;
-
                 let formData = new FormData();
-                formData.append('id_lead', id);
-                formData.append('name', name);
-                formData.append('phone', phone);
-                formData.append('email', email);
-                formData.append('status', status);
+                formData.append('id_lead', this.id);
+                formData.append('name', this.name);
+                formData.append('phone', this.phone);
+                formData.append('email', this.email);
+                formData.append('status', this.status);
 
                 axios.post('/lead/updateLead', formData)
                      .then(res => {
-                        if(res.data == 'succes'){
+                        if(res.data.status == 'success'){
                             this.$emit('lead-updated');
-                            
-                            if(this.edit){
-                                this.editUser();
-                            }
+                            this.edit = false;
                         }
                      })
                      .catch(error => {
@@ -117,19 +118,13 @@
             },
             deleteLead(){
 
-                let id = this.id;
-                
                 let formData = new FormData();
-                formData.append('id_lead', id);
+                formData.append('id_lead', this.id);
 
                 axios.post('/lead/deleteLead', formData)
                      .then(res => {
-                        if(res.data == 'succes'){
+                        if(res.data.status == 'success'){
                             this.$emit('lead-updated');
-                            
-                            if(this.edit){
-                                this.editUser();
-                            }
                         }
                      })
                      .catch(error => {
@@ -154,5 +149,9 @@
     button {
         width: 40%;
 
+    }
+
+    input {
+        width: 85%;
     }
 </style>
