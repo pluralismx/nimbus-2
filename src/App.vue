@@ -11,7 +11,7 @@
             :userWebsites="websites" 
             @dashboard-data="handleDashboardData"
             @toggle-aside="toggleAside" 
-            @toggle-lead-table="toggleLeadTable" 
+            @toggle-workspace="toggleWorkspace" 
             @logged-out="handleSession" 
         />
 
@@ -31,6 +31,7 @@
                 :leads="leads" 
                 @lead-updated="handleLeadUpdated"
             />
+            <EmailComponent v-if="email"/>
         </div>
 
         <!-- Footer -->
@@ -49,6 +50,7 @@ import LoginComponent from './components/LoginComponent.vue';
 import NavigationBarComponent from './components/NavigationBarComponent.vue';
 import NotesComponent from './components/NotesComponent.vue';
 import LeadTableComponent from './components/LeadTableComponent.vue';
+import EmailComponent from './components/EmailModule/EmailComponent.vue';
 import FooterComponent from './components/FooterComponent.vue';
 import ToastComponent from './components/ToastComponent.vue';
 
@@ -59,6 +61,7 @@ export default {
         NavigationBarComponent,
         NotesComponent,
         LeadTableComponent,
+        EmailComponent,
         FooterComponent,
         ToastComponent
     },
@@ -70,6 +73,7 @@ export default {
             notes: [],
             leads: [],
             aside: false,
+            email: false,
             lead_table: false,
             modal: false
         }
@@ -154,11 +158,25 @@ export default {
                 this.aside = false;
             }
         },
-        toggleLeadTable() {
-            if (this.lead_table == false) {
-                this.lead_table = true;
-            } else if (this.lead_table == true) {
-                this.lead_table = false;
+        toggleWorkspace(tool) {
+            console.log(tool)
+            switch(tool){
+                case 'leads':
+                    if(this.lead_table == false){
+                        this.lead_table = true;
+                        this.email = false;
+                    }else{
+                        this.lead_table = false;
+                    }
+                    break;
+                case 'email':
+                    if(this.email == false){
+                        this.email = true;
+                        this.lead_table = false;
+                    }else{
+                        this.email = false;
+                    }
+                    break;
             }
         }
 

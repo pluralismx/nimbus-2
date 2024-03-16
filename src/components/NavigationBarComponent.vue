@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <ul>
+    <ul class="nav-dashboard-tools">
       <li style="color: #FCCA6F;">
         Sitio:&nbsp;
         <select v-model="selectedWebsiteId" @change="websiteData()">
@@ -8,13 +8,13 @@
         </select>
       </li>
       <li @click="toggleNotesContainer()">
-        notas
+        Notas
       </li>
-      <li @click="toggleLeadTable()">
-        prospectos
+      <li @click="toggleWorkspace('leads')">
+        Prospectos
       </li>
-      <li>
-        email
+      <li @click="toggleWorkspace('email')">
+        Email
       </li>
     </ul>
     <ul>
@@ -58,8 +58,8 @@ export default {
     toggleNotesContainer(){
       this.$emit('toggle-aside');
     },
-    toggleLeadTable(){
-      this.$emit('toggle-lead-table');
+    toggleWorkspace(tool){
+      this.$emit('toggle-workspace', tool);
     },
     logOut(){
 
@@ -98,6 +98,13 @@ export default {
     display: flex;
     margin: 0px;
     align-items: center;
+    
+  }
+
+  .nav-dashboard-tools {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
   }
 
   li{

@@ -11,8 +11,8 @@
                 <tr class="table-tools">
                     <td class="table-search" colspan="2">
                         <label for="">Buscar:&nbsp;</label>
-                        <input type="text">&nbsp;
-                        <button class="btn-green">buscar</button>
+                        <input v-model="search_query" type="text">&nbsp;
+                        <button @click="search()" class="btn-green">{{ search_btn_text }}</button>
                     </td>
                     <td class="table-pagination" colspan="4">
                         <label for="rows_per_page">filas por página: </label>
@@ -36,12 +36,22 @@
                     <th width="18%">Acciones</th>
                 </tr>
             </thead>
-            <tbody>
-                <TableRowComponent 
+            <tbody v-show="!results" >
+                <TableRowComponent
                     v-for="lead in displayedData" 
                     :leadData="lead" 
                     :key="lead.id_lead" 
                     @lead-updated="handleLeadUpdated"
+                    @lead-deleted="handleLeadDeleted"
+                />
+            </tbody>
+            <tbody v-show="results">
+                <TableRowComponent
+                    v-for="lead in results_data" 
+                    :leadData="lead" 
+                    :key="lead.id_lead" 
+                    @lead-updated="handleLeadUpdated"
+                    @lead-deleted="handleLeadDeleted"
                 />
             </tbody>
         </table>
@@ -50,7 +60,7 @@
         :website="website_id" 
         v-show="add_lead_modal" 
         @close-modal="add_lead_modal = false"
-        @lead-added="handleLeadUpdated"
+        @lead-added="handleLeadAdded"
     />
 </template>
 <script>
@@ -81,7 +91,11 @@
                 leads_local: null,
                 leads_per_page: null,
                 rp: 10,
-                cp: 1         
+                cp: 1,
+                search_query: null,
+                results: false,
+                results_data: [],
+                search_btn_text: 'buscar'  
             }
         },
         computed: {
@@ -132,10 +146,31 @@
                     this.cp--;
                 }
             },
-            handleLeadUpdated(){
+            handleLeadAdded(lead){
+                this.results = false;
                 this.add_lead_modal = false;
-                this.$emit('lead-updated');
+                this.leads_local.unshift(lead);
             },
+            handleLeadUpdated(id_lead, lead_updated){         
+                this.leads_local.forEach(lead => {
+                    if (lead.id_lead === id_lead) {
+                        lead.name = lead_updated.name;
+                        lead.phone = lead_updated.phone;
+                        lead.email = lead_updated.email;
+                        lead.status = lead_updated.status;
+                        return;
+                    }
+                    this.results = false;
+                });
+            },
+            handleLeadDeleted(id){
+                const indexToRemove = this.leads_local.findIndex(lead => lead.id_lead === id);
+                if (indexToRemove !== -1) {
+                    this.leads_local.splice(indexToRemove, 1);
+                }
+                this.results = false;
+            },
+
             sortTable(index) {
 
                 let asc = true;
@@ -170,6 +205,27 @@
                     });
                 }
                 
+            },
+            search(){
+                
+                if(this.results == false){
+                    this.search_btn_text = 'limpiar';
+                    let query = this.search_query;
+                    this.leads_local.forEach(lead => {
+                        if (query === lead.name || query === lead.phone || query === lead.email) {
+                            let id = lead.id_lead;
+                            if (!this.results_data.some(match => match.id_lead === id)) {
+                                this.results_data.push(lead);
+                            }
+                        }
+                    });
+                    this.results = true;
+                }else{
+                    this.results_data = [];
+                    this.search_query = null;
+                    this.results = false;
+                    this.search_btn_text = 'buscar';
+                }
             }
         }
     }

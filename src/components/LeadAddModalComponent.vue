@@ -93,7 +93,14 @@ export default {
             axios.post('/lead/addLeadManually', formData)
                 .then(res=>{
                     if(res.data.status == 'success'){
-                        this.$emit('lead-added');
+                        const new_lead = {
+                            "name": this.name,
+                            "phone": this.phone,
+                            "email": this.email,
+                            "status": this.status,
+                            "created_at": "ahora"
+                        };
+                        this.$emit('lead-added', new_lead);
                     }
                 })
                 .catch(error=>{

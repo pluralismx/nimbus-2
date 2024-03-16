@@ -105,10 +105,19 @@
                 formData.append('email', this.email);
                 formData.append('status', this.status);
 
+                const updated_lead = {
+                    "name": this.name,
+                    "phone": this.phone,
+                    "email": this.email,
+                    "status": this.status
+                };
+
+                let id_lead = this.id_lead;
+
                 axios.post('/lead/updateLead', formData)
                      .then(res => {
                         if(res.data.status == 'success'){
-                            this.$emit('lead-updated');
+                            this.$emit('lead-updated', id_lead, updated_lead);
                             this.edit = false;
                         }
                      })
@@ -124,7 +133,7 @@
                 axios.post('/lead/deleteLead', formData)
                      .then(res => {
                         if(res.data.status == 'success'){
-                            this.$emit('lead-updated');
+                            this.$emit('lead-deleted', this.id);
                         }
                      })
                      .catch(error => {
