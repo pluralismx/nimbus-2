@@ -13,7 +13,7 @@
         grid-row: 3/4;
         grid-column: 1/3;
         background: #222;
-        color: var(--light);
+        color: var(--basic);
         display: flex;
         align-items: center;
         padding: 0px 1rem;

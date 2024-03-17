@@ -24,10 +24,10 @@
 
         <!-- Actions -->
         <td v-if="!edit" width="18%">
-            <button class="btn-green" @click="editForm()">editar</button>&nbsp;&nbsp;<button class="btn-warning" @click="deleteLead()">borrar</button>
+            <button class="btn-primary" @click="editForm()">editar</button>&nbsp;&nbsp;<button class="btn-warning" @click="deleteLead()">borrar</button>
         </td>
         <td v-if="edit" width="18%">
-            <button class="btn-warning" @click="updateLead()">actualizar</button>&nbsp;&nbsp;<button class="btn-green" @click="editForm()">cancelar</button>
+            <button class="btn-warning" @click="updateLead()">actualizar</button>&nbsp;&nbsp;<button class="btn-primary" @click="editForm()">cancelar</button>
         </td>
     </tr>
 </template>
@@ -72,17 +72,17 @@
             statusColor() {
                 switch (this.status) {
                     case 'Nuevo':
-                        return '#222'; 
+                        return 'gray'; 
                     case 'Identificación':
-                        return '#013856'; 
+                        return 'red'; 
                     case 'Presentación':
-                        return '#055065';
+                        return 'red';
                     case 'Cotización':
-                        return '#017260';
+                        return 'orange';
                     case 'Negociación':
-                        return '#14A95F';
+                        return 'orange';
                     case 'Cierre':
-                        return '#67E36C'; 
+                        return 'green'; 
                     default:
                         return 'white';
                 }

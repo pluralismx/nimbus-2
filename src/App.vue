@@ -30,6 +30,8 @@
                 :website="website" 
                 :leads="leads" 
                 @lead-updated="handleLeadUpdated"
+                @lead-added="handleLeadAdded"
+                @lead-deleted="handleLeadDeleted"
             />
             <EmailComponent v-if="email"/>
         </div>
@@ -132,6 +134,12 @@ export default {
                     console.error(error);
                 });
         },
+        handleLeadAdded() {
+            this.modal = true;
+            setTimeout(() => {
+                this.modal = false;
+            }, 2000);
+        },
         handleLeadUpdated() {
             let formData = new FormData();
             let website = this.website;
@@ -150,6 +158,12 @@ export default {
                 }).catch(error => {
                     console.error(error);
                 });
+        },
+        handleLeadDeleted() {
+            this.modal = true;
+            setTimeout(() => {
+                this.modal = false;
+            }, 2000);
         },
         toggleAside() {
             if (this.aside == false) {
@@ -195,7 +209,7 @@ body {
     grid-template-columns: 20vw 80vw;
     grid-template-rows: 8vh 86vh 6vh;
     font-family: 'Regular';
-    background-color: #444;
+    background-color: var(--basic);
     z-index: 90;
 }
 
@@ -218,7 +232,7 @@ body {
     height: 100%;
     grid-column: 2/3;
     grid-row: 2/3;
-    background: silver;
+    background: var(--basic);
     box-sizing: border-box;
 }
 

@@ -1,7 +1,7 @@
 <template>
   <nav>
     <ul class="nav-dashboard-tools">
-      <li style="color: #FCCA6F;">
+      <li style="color: #d0efff;">
         Sitio:&nbsp;
         <select v-model="selectedWebsiteId" @change="websiteData()">
           <option v-for="website in userWebsites" :key="website.id_website" :value="website.id_website">{{ website.name }}</option>
@@ -18,7 +18,7 @@
       </li>
     </ul>
     <ul>
-      <li @click="logOut()">cerrar sesión</li>
+      <li @click="logOut()">Cerrar sesión</li>
     </ul>
   </nav>
 </template>
@@ -83,7 +83,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: brown;
+    background-color: var(--primary);
     z-index: 100;
     box-shadow: 0px 4px 6px #222;
     padding: 1rem;

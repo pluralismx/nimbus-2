@@ -12,7 +12,7 @@
                     <td class="table-search" colspan="2">
                         <label for="">Buscar:&nbsp;</label>
                         <input v-model="search_query" type="text">&nbsp;
-                        <button @click="search()" class="btn-green">{{ search_btn_text }}</button>
+                        <button @click="search()" class="btn-warning">{{ search_btn_text }}</button>
                     </td>
                     <td class="table-pagination" colspan="4">
                         <label for="rows_per_page">filas por página: </label>
@@ -22,16 +22,16 @@
                             <option value="25">25</option>
                             <option value="50">50</option>
                         </select>
-                        <button @click="previousPage">&lt;</button>
+                        <button class="btn-warning" @click="previousPage">&lt;</button>
                         <span>&nbsp;{{ this.cp }}</span><span>&nbsp;/&nbsp;</span><span>{{ this.pages }}&nbsp;</span>
-                        <button @click="nextPage">&gt;</button>
+                        <button class="btn-warning" @click="nextPage">&gt;</button>
                     </td>
                 </tr>
                 <tr>
-                    <th width="18%" @click="sortTable('name')"><span>Nombre</span></th>
-                    <th width="18%" @click="sortTable('phone')"><span>Telefono</span></th>
-                    <th width="18%" @click="sortTable('email')"><span>Correo</span></th>
-                    <th width="18%" @click="sortTable('status')"><span>Status</span></th>
+                    <th width="18%"><span @click="sortTable('name')">Nombre</span></th>
+                    <th width="18%"><span @click="sortTable('phone')">Telefono</span></th>
+                    <th width="18%"><span  @click="sortTable('email')">Correo</span></th>
+                    <th width="18%"><span  @click="sortTable('status')">Status</span></th>
                     <th width="18%"><span>Fecha</span></th>
                     <th width="18%">Acciones</th>
                 </tr>
@@ -150,6 +150,7 @@
                 this.results = false;
                 this.add_lead_modal = false;
                 this.leads_local.unshift(lead);
+                this.$emit('lead-added');
             },
             handleLeadUpdated(id_lead, lead_updated){         
                 this.leads_local.forEach(lead => {
@@ -160,6 +161,7 @@
                         lead.status = lead_updated.status;
                         return;
                     }
+                    this.$emit('lead-added');
                     this.results = false;
                 });
             },
@@ -169,6 +171,7 @@
                     this.leads_local.splice(indexToRemove, 1);
                 }
                 this.results = false;
+                this.$emit('lead-deleted');
             },
 
             sortTable(index) {
@@ -232,7 +235,7 @@
 </script>
 <style scoped>
     section {
-        background-color: silver;
+        background-color: var(--basic);
         padding: 2rem;
         box-sizing: border-box;
         height: 100%;
@@ -262,8 +265,8 @@
     }
 
     thead{
-        background-color: brown;
-        color: white;
+        background-color: var(--primary);
+        color: var(--basic);
     }
 
     thead tr th {
@@ -273,24 +276,23 @@
     }
 
     thead tr th span{
-        color: var(--accent);
+        color: var(--basic);
         transition: all 300ms;
     }
 
     thead tr th span:hover{
-        text-shadow: 0 0 4px var(--accent);
         cursor: pointer;
     }
 
     tbody tr:nth-child(odd) {
-        background-color: #444;
-        color: white;
+        background-color: var(--accent);
+        color: var(--warning);
     }
 
     .table-tools {
-        background-color: brown;
-        color: white;
-        box-shadow: 0 1px 3px #222;
+        background-color: var(--primary);
+        color: var(--basic);
+        border-bottom: 1px solid var(--shadows);
     }
 
     .table-tools td {
@@ -313,19 +315,6 @@
         width: 4rem;
         margin-right: 1rem;
         padding: 5px;
-    }
-
-    button {
-        border-radius: 3px;
-        background-color: olivedrab;
-        color: white;
-        border: none;
-        box-shadow: 2px 2px 3px #222;
-    }
-
-    button:hover{
-        background-color: #222;
-        cursor: pointer;
     }
 
     input {

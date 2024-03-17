@@ -14,7 +14,7 @@
 </script>
 <style>
     section {
-        background-color: silver;
+        background-color: var(--basic);
         padding: 2rem;
         box-sizing: border-box;
         height: 100%;

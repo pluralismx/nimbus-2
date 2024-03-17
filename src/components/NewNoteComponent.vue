@@ -7,7 +7,7 @@
             <textarea v-model="content" placeholder="Escribe algo interesante"></textarea>
         </div>
         <div class="note-footer">
-            <button class="btn-green" @click="createNote()">guardar</button>
+            <button class="btn-primary" @click="createNote()">guardar</button>
         </div>
     </div>
 </template>
@@ -55,7 +55,7 @@
 
 <style scoped>
     .note-container {
-        background-color: silver;
+        background-color: var(--basic);
         border-radius: .5rem;
         box-shadow: 2px 2px 3px black;
         box-sizing: border-box;
@@ -65,7 +65,7 @@
 
     .note-header {
         height: 15%;
-        border-bottom: 1px solid var(--accent);
+        border-bottom: 1px solid var(--primary);
     }
 
     .note-header input{
@@ -86,7 +86,7 @@
     .note-body {
         height: 70%;
         background-color: transparent;
-        border-bottom: 1px solid var(--accent);
+        border-bottom: 1px solid var(--primary);
     }
 
     .note-body textarea {

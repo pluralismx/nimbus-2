@@ -7,9 +7,9 @@
             <textarea name="cuerpo de la nota" placeholder="Escribe algo interesante" v-model="content"></textarea>
         </div>
         <div class="note-footer">
-            <button class="btn-green" @click="deleteNote()">eliminar</button>
-            <button class="btn-green" @click="updateNote()">editar</button>
-            <button class="btn-green">copiar</button>
+            <button class="btn-warning" @click="deleteNote()">eliminar</button>
+            <button class="btn-primary" @click="updateNote()">editar</button>
+            <button class="btn-primary">copiar</button>
         </div>
     </div>
 </template>
@@ -68,7 +68,7 @@
 </script>
 <style scoped>
     .note-container {
-        background-color: var(--basic);
+        background-color: var(--shadows);
         border-radius: .5rem;
         box-shadow: 2px 2px 3px black;
         box-sizing: border-box;

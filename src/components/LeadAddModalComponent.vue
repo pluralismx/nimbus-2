@@ -3,7 +3,7 @@
         <div class="modal-container">
             <div class="modal-header">
                 <span>Agregar lead manualmente</span>
-                <button @click="close()" class="btn-green">&times;</button>
+                <button @click="close()" class="btn-warning">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="add-lead-form">
@@ -32,7 +32,7 @@
             </div>
             <div class="modal-footer">
                 <button @click="addLead()" class="btn-warning">guardar</button>&nbsp;&nbsp;
-                <button @click="close()" class="btn-green">cancelar</button>
+                <button @click="close()" class="btn-primary">cancelar</button>
             </div>
         </div>
     </div>
@@ -55,12 +55,12 @@ export default {
             email: null,
             status: null,
             status_list: [
-                "nuevo",
-                "identificacion",
-                "presentacion",
-                "cotiziacion",
-                "negociacion",
-                "cierre"
+                "Nuevo",
+                "Identificacion",
+                "Presentacion",
+                "Cotiziacion",
+                "Negociacion",
+                "Cierre"
             ]
         }
     },
@@ -133,21 +133,24 @@ export default {
 
     .modal-container {
         width: 20%;
-        background-color: #888;
+        background-color: var(--basic);
+        border-radius: .5rem;
+        box-shadow: 3px 3px 6px var(--shadows);
     }
 
     .modal-header {
-        background-color: brown;
+        background-color: var(--primary);
         padding: .5rem;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        color: var(--light);
+        color: var(--basic);
+        border-top-left-radius: .5rem;
+        border-top-right-radius: .5rem;
     }
 
     .modal-body{
-        background-color: #888;
         padding: .5rem;
     }
 

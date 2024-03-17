@@ -54,7 +54,7 @@
     aside {
         grid-row: 2/3;
         grid-column: 1/2;
-        background-color: var(--dark);
+        background-color: var(--primary);
         padding: 2rem;
         box-sizing: border-box;
         height: 100%;
@@ -68,32 +68,17 @@
     }
     h1 {
         margin: 0px;
-        color: var(--light);
+        color: var(--basic);
     }
 
     span {
         margin: 0px;
-        color: var(--light);
+        color: var(--basic);
     }
 
     span:hover{
         cursor: pointer;
         text-shadow: 0 0 3px white;
-    }
-    .form-container {
-        background-color: brown;
-        padding: 2rem;
-        color: white;
-        width: 300px;
-        box-shadow: 3px 3px 3px #333;
-        box-sizing: border-box;
-    }
-    input {
-        padding: .5rem;
-        width: 100%;
-        box-sizing: border-box;
-        border-radius: 3px;
-        border: none;
     }
     button {
         background-color: olivedrab;
