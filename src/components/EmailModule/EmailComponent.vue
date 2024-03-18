@@ -2,17 +2,31 @@
     <section>
         <div class="title-bar">
             <h1>Email Campaing</h1>
-            <hr/>
         </div>
-        <hr>
+        <hr/>
+        <div class="email-container">
+            <div class="email-toolbar">
+                <EmailToolBarComponent/>
+            </div>
+            <div class="email-body">
+                <EmailSettingsComponent/>
+            </div>
+        </div>
     </section>
 </template>
 <script>
+    import EmailToolBarComponent from './EmailToolBarComponent.vue';
+    import EmailSettingsComponent from './EmailSettingsComponent.vue';
+
     export default {
-        name: 'EmailComponent'
+        name: 'EmailComponent',
+        components: {
+            EmailToolBarComponent,
+            EmailSettingsComponent
+        }
     }
 </script>
-<style>
+<style scoped>
     section {
         background-color: var(--basic);
         padding: 2rem;
@@ -29,5 +43,17 @@
 
     .title-bar h1 {
         margin: 0px;
+    }
+
+    .email-container {
+        box-shadow: 2px 2px 4px var(--shadows);
+        height: 92%;
+    }
+
+    .email-body {
+        height: inherit;
+        display: grid;
+        grid-template-columns: 30% 70%;
+        grid-template-rows: 100%;
     }
 </style>
