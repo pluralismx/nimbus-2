@@ -6,7 +6,6 @@
                 <span>Seleccione los prospectos</span>
             </div>
             <div class="options-body">
-
                 <div class="checkbox-block">
                     <input type="checkbox">
                     <label for="">Todos</label>

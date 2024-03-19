@@ -1,17 +1,26 @@
 <template>
     <div class="tool-bar">
         <ul>
-            <li>Destinatarios</li>
-            <li>Plantillas</li>
-            <li>Personalizado</li>
-            <li>PC</li>
-            <li>Móvil</li>
+            <li @click="toggleOptions('recipients')">Destinatarios</li>
+            <li @click="toggleOptions('template')">Plantillas</li>
+            <li @click="screenSize('pc')">PC</li>
+            <li @click="screenSize('mobile')">Móvil</li>
+            <li>Configuración</li>
         </ul>
     </div>
 </template>
 <script>
     export default {
-        name: 'EmailToolBarComponent'
+        name: 'EmailToolBarComponent',
+        methods: {
+            toggleOptions(option) {
+                this.$emit('toggle-settings', option);
+            },
+            screenSize(size) {
+                this.$emit('change-size', size);
+            }
+
+        }
     }
 </script>
 <style scoped>

@@ -1,15 +1,20 @@
 <template>
-    <section>
+    <section class="email-section">
         <div class="title-bar">
             <h1>Email Campaing</h1>
         </div>
         <hr/>
         <div class="email-container">
             <div class="email-toolbar">
-                <EmailToolBarComponent/>
+                <EmailToolBarComponent 
+                    @toggle-settings="handleToggleSettings"
+                    @change-size="handleChangeSize"
+                />
             </div>
             <div class="email-body">
-                <EmailSettingsComponent/>
+                <EmailSettingsComponent v-show="recipients_settings"/>
+                <EmailTemplateSettingsComponent v-show="template_settings"/>
+                <EmailPreviewComponent :size="size"/>
             </div>
         </div>
     </section>
@@ -17,17 +22,54 @@
 <script>
     import EmailToolBarComponent from './EmailToolBarComponent.vue';
     import EmailSettingsComponent from './EmailSettingsComponent.vue';
+    import EmailTemplateSettingsComponent from './EmailTemplateSettingsComponent.vue';
+    import EmailPreviewComponent from './EmailPreviewComponent.vue';
 
     export default {
         name: 'EmailComponent',
         components: {
             EmailToolBarComponent,
-            EmailSettingsComponent
+            EmailSettingsComponent,
+            EmailTemplateSettingsComponent,
+            EmailPreviewComponent
+        },
+        data() {
+            return {
+                recipients_settings: true,
+                template_settings: false,
+                size: null
+            }
+        },
+        methods: {
+            handleToggleSettings(option) {
+                switch(option) {
+                    case 'recipients':
+                        if(this.recipients_settings == false){
+                            this.recipients_settings = true;
+                            this.template_settings = false;
+                        }else{
+                            this.recipients_settings = true;
+                        }
+                    break;
+
+                    case 'template' :
+                    if(this.template_settings == false){
+                            this.template_settings = true;
+                            this.recipients_settings = false;
+                        }else{
+                            this.template_settings = true;
+                        }
+                    break;
+                }
+            },
+            handleChangeSize(size){
+                this.size = size;
+            }
         }
     }
 </script>
 <style scoped>
-    section {
+    .email-section {
         background-color: var(--basic);
         padding: 2rem;
         box-sizing: border-box;
