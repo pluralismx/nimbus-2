@@ -8,15 +8,16 @@
                 <div class="select-block">
                     <div>
                         <label>Plantilla</label>
-                        <select>
-                            <option value=""></option>
+                        <select v-model="template" @change="toggleTemplate()">
+                            <option value="promotional">promotional</option>
+                            <option value="newsletter">news letter</option>
                         </select>
                     </div>
 
                     <div>
                         <label>Tema</label>
-                        <select>
-                            <option v-for="color in tema" :key="color">{{ color }}</option>
+                        <select @change="toggleTheme()" v-model="theme">
+                            <option v-for="color in themes" :key="color" :value="color.hex">{{ color.name }}</option>
                         </select>
                     </div>
                 </div>
@@ -29,18 +30,28 @@
         name: 'EmailTemplateSettingsComponent',
         data() {
             return {
-                tema: {
-                    Goldstone: '#630006',
-                    Jasper: '#a00f16',
-                    Carnelian: '#ba4a00',
-                    Aventurine: '#e48600',
-                    Amethyst: '#4d1564',
-                    Garnet: '#780132',
-                    Dumortierte: '#12376a',
-                    Jadeite: '#037e99',
-                    Jade: '#25654e',
-                    Apatite: '#003e48'
-                }
+                themes: [
+                    {"name": "Goldstone", "hex":"#630006"},
+                    {"name": "Jasper", "hex":"#a00f16"},
+                    {"name": "Carnelian", "hex":"#ba4a00"},
+                    {"name": "Aventurine", "hex":"#e48600"},
+                    {"name": "Amethyst", "hex":"#4d1564"},
+                    {"name": "Garnet", "hex":"#780132"},
+                    {"name": "Dumortierte", "hex":"#12376a"},
+                    {"name": "Jadeite", "hex":"#037e99"},
+                    {"name": "Jade", "hex":"#25654e"},
+                    {"name": "Apatite", "hex":"#003e48"}
+                ],
+                template: null,
+                theme: null
+            }
+        },
+        methods: {
+            toggleTemplate() {
+                this.$emit('template-changed', this.template);
+            },
+            toggleTheme(){
+                this.$emit('theme-changed', this.theme);
             }
         }
     }
@@ -95,4 +106,5 @@
         align-items: center;
         justify-content: center;
     }
+
 </style>

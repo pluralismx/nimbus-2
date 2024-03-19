@@ -12,9 +12,19 @@
                 />
             </div>
             <div class="email-body">
-                <EmailSettingsComponent v-show="recipients_settings"/>
-                <EmailTemplateSettingsComponent v-show="template_settings"/>
-                <EmailPreviewComponent :size="size"/>
+                <EmailSettingsComponent 
+                    v-show="recipients_settings"
+                />
+                <EmailTemplateSettingsComponent 
+                    v-show="template_settings"
+                    @template-changed="handleTemplateChanged"
+                    @theme-changed="handleThemeChanged" 
+                />
+                <EmailPreviewComponent 
+                    :size="size"
+                    :template="template"
+                    :theme="theme"
+                />
             </div>
         </div>
     </section>
@@ -37,7 +47,9 @@
             return {
                 recipients_settings: true,
                 template_settings: false,
-                size: null
+                size: null,
+                template: null,
+                theme: null
             }
         },
         methods: {
@@ -64,11 +76,18 @@
             },
             handleChangeSize(size){
                 this.size = size;
+            },
+            handleTemplateChanged(template){
+                this.template = template;
+            },
+            handleThemeChanged(theme){
+                this.theme = theme;
             }
         }
     }
 </script>
 <style scoped>
+
     .email-section {
         background-color: var(--basic);
         padding: 2rem;
