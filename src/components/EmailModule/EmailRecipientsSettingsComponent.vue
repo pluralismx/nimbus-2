@@ -78,7 +78,7 @@
 </template>
 <script>
     export default {
-        name: 'EmailSettingsComponent'
+        name: 'EmailRecipientsSettingsComponent'
     }
 </script>
 <style scoped>

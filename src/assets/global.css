@@ -65,11 +65,38 @@ input {
 select {
     padding: .5rem;
     width: 180px;
+    border: none;
     border-radius: .5rem;
-    box-shadow: 2px 2px 4px var(--shadows);
-    background-color: var(--basic);
 }
 
 select:focus {
     outline: none;
 }
+
+/* SCROLL BAR */
+
+/* Set the width and height of the scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  
+  /* Set the background color of the scrollbar */
+  ::-webkit-scrollbar-track {
+    background-color: #B1CBD7;
+    width: 5px;
+    
+    /* border: 1px solid var(--shadows); */
+  }
+  
+  /* Set the color and rounded edges of the scrollbar thumb */
+  ::-webkit-scrollbar-thumb {
+    background-color: #8a8a8a;
+    /* border-radius: 4px; */
+  }
+  
+  /* Set the color and rounded edges of the scrollbar thumb when it is being hovered */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #7a7a7a;
+    transition: background-color 300ms;
+  }

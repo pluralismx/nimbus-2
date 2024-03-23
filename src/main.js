@@ -3,7 +3,7 @@ import App from './App.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import './assets/global.css';
 
-import LeadTableComponent from './components/LeadTableComponent.vue';
+import LeadTableComponent from './components/LeadsModule/LeadTableComponent.vue';
 
 const routes = [
     { path: '/prospectos', component: LeadTableComponent }

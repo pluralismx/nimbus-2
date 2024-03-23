@@ -5,33 +5,43 @@
         </div>
         <hr/>
         <div class="email-container">
+            <!-- Tool bar -->
             <div class="email-toolbar">
                 <EmailToolBarComponent 
                     @toggle-settings="handleToggleSettings"
                     @change-size="handleChangeSize"
                 />
             </div>
+
             <div class="email-body">
-                <EmailSettingsComponent 
-                    v-show="recipients_settings"
-                />
-                <EmailTemplateSettingsComponent 
-                    v-show="template_settings"
-                    @template-changed="handleTemplateChanged"
-                    @theme-changed="handleThemeChanged" 
-                />
-                <EmailPreviewComponent 
-                    :size="size"
-                    :template="template"
-                    :theme="theme"
-                />
+                <!-- Aside -->
+                <aside>
+                    <EmailRecipientsSettingsComponent 
+                        v-show="recipients_settings"
+                    />
+                    <EmailTemplateSettingsComponent 
+                        v-show="template_settings"
+                        @template-changed="handleTemplateChanged"
+                        @theme-changed="handleThemeChanged"
+                    />
+                </aside>
+                
+                <!-- Main -->
+                <section>
+                    <EmailPreviewComponent
+                        :size="size"
+                        :template="template"
+                        :theme="theme"
+                    />
+                </section>
+
             </div>
         </div>
     </section>
 </template>
 <script>
     import EmailToolBarComponent from './EmailToolBarComponent.vue';
-    import EmailSettingsComponent from './EmailSettingsComponent.vue';
+    import EmailRecipientsSettingsComponent from './EmailRecipientsSettingsComponent.vue';
     import EmailTemplateSettingsComponent from './EmailTemplateSettingsComponent.vue';
     import EmailPreviewComponent from './EmailPreviewComponent.vue';
 
@@ -39,7 +49,7 @@
         name: 'EmailComponent',
         components: {
             EmailToolBarComponent,
-            EmailSettingsComponent,
+            EmailRecipientsSettingsComponent,
             EmailTemplateSettingsComponent,
             EmailPreviewComponent
         },

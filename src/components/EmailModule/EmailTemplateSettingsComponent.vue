@@ -1,33 +1,55 @@
 <template>
-    <div class="settings-container">
-        <div class="options-block-container">
-            <div class="options-header">
+    <section class="settings-aside">
+
+        <!-- Template select -->
+        <div class="settings-container">
+
+            <!-- Title -->
+            <div class="settings-header">
                 <span>Seleccione un templete</span>
             </div>
-            <div class="options-body">
+            <!-- Content -->
+            <div class="settings-body">
+            
                 <div class="select-block">
-                    <div>
-                        <label>Plantilla</label>
-                        <select v-model="template" @change="toggleTemplate()">
-                            <option value="promotional">promotional</option>
-                            <option value="newsletter">news letter</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>Tema</label>
-                        <select @change="toggleTheme()" v-model="theme">
-                            <option v-for="color in themes" :key="color" :value="color.hex">{{ color.name }}</option>
-                        </select>
-                    </div>
+                    <label>Plantilla</label>
+                    <select v-model="template" @change="toggleTemplate()">
+                        <option value="promotional">promotional</option>
+                        <option value="newsletter">news letter</option>
+                    </select>
                 </div>
+
+                <div class="select-block">
+                    <label>Tema</label>
+                    <select v-model="theme" @change="toggleTheme()">
+                        <option v-for="color in themes" :key="color" :value="color.hex">{{ color.name }}</option>
+                    </select>
+                </div>
+
             </div>
         </div>
-    </div>
+
+        <!-- Promotional -->
+        <PromotionalTemplateSettingsComponent
+            v-show="template == 'promotional'"
+        />
+
+        <!-- News Letter -->
+        <NewsLetterTemplateSettingsComponent 
+            v-show="template == 'newsletter'"
+        />
+
+    </section>
 </template>
 <script>
+    import PromotionalTemplateSettingsComponent from './PromotionalTemplateSettingsComponent.vue';
+    import NewsLetterTemplateSettingsComponent from './NewsLetterTemplateSettingsComponent.vue';
     export default {
         name: 'EmailTemplateSettingsComponent',
+        components: {
+            PromotionalTemplateSettingsComponent,
+            NewsLetterTemplateSettingsComponent
+        },
         data() {
             return {
                 themes: [
@@ -44,6 +66,7 @@
                 ],
                 template: null,
                 theme: null
+
             }
         },
         methods: {
@@ -58,53 +81,39 @@
 </script>
 <style scoped>
 
-    .settings-container {
+    .settings-aside {
+        box-sizing: border-box;
         border-right: 1px solid var(--primary);
         grid-column: 1/2;
         grid-row: 1/2;
         padding: 1rem;
+        overflow-y: scroll;
     }
 
-    .options-block-container {
-        width: 100%;
-        margin-bottom: 2rem;
-
+    .settings-container {
+        margin-top: 1rem;
     }
 
-    .options-header{
-        padding: .5rem;
+    .settings-header{
         background-color: var(--primary);
         color: var(--basic);
+        padding: .5rem;
     }
 
-    .options-body {
-        padding-top: .5rem;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .select-block {
-        margin-bottom: .5rem;
+    .settings-body {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
     }
 
-    .select-block div {
+    .select-block {
+        margin: 1rem 0;
         display: flex;
         flex-direction: column;
     }
 
-    input[type="text"] {
-        box-sizing: border-box;
-        width: 100%;
-    }
-
-    .actions-block-container {
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .select-block select {
+        margin-top: .5rem;
     }
 
 </style>
